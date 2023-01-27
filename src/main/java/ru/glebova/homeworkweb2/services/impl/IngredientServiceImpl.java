@@ -12,18 +12,8 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public void add(Ingredient ingredient) {
-        if (count == 0) {
-            count++;
-            ingredientMap.put(count, ingredient);
-            return;
+            ingredientMap.put(count++, ingredient);
         }
-        if (ingredientMap.containsValue(ingredient)) {
-            throw new RuntimeException("Этот ингредиент уже добавлен");
-        } else {
-            count++;
-            ingredientMap.put(count, ingredient);
-        }
-    }
 
     @Override
     public Ingredient get(int id) {

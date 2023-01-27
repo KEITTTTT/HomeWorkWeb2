@@ -13,18 +13,8 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public void add(Recipe recipe) {
-        if (count == 0) {
-            count++;
-            recipeMap.put(count, recipe);
-            return;
+            recipeMap.put(count++, recipe);
         }
-        if (recipeMap.containsValue(recipe)) {
-            throw new RuntimeException("Этот рецепт уже существует");
-        } else {
-            count++;
-            recipeMap.put(count, recipe);
-        }
-    }
 
     @Override
     public Recipe get(int id) {
