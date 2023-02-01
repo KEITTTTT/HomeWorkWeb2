@@ -2,6 +2,7 @@ package ru.glebova.homeworkweb2.model;
 
 import java.util.Objects;
 
+
 public class Ingredient {
     private String name;
     private int quantity;

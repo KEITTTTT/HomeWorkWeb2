@@ -8,7 +8,6 @@ public class Recipe {
     private String name;
     private int cookingTime;
     private List<Ingredient> ingredients;
-
     private ArrayList<String> steps;
 
     public Recipe(String name, int preparingTime, List<Ingredient> ingredients, ArrayList<String> steps) {
@@ -64,3 +63,4 @@ public class Recipe {
         return Objects.hash(name, cookingTime, ingredients, steps);
     }
 }
+
