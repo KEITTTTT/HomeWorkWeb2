@@ -36,7 +36,7 @@ public class IngredientController {
     }
 
     @DeleteMapping("/{id}")
-    public Ingredient removeIngredient(@PathVariable("id") int id, @RequestBody Recipe ingredient) {
+    public Ingredient removeIngredient(@PathVariable("id") int id) {
         return ingredientService.remove(id);
     }
 }

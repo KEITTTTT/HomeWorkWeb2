@@ -26,7 +26,8 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient update(int id, Ingredient ingredient) {
         if (ingredientMap.containsKey(id)) {
-            return ingredientMap.put(id, ingredient);
+            ingredientMap.put(id, ingredient);
+            return ingredient;
         }
         return null;
     }
