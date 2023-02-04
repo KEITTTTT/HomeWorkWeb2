@@ -18,7 +18,7 @@ import java.util.Map;
 @Tag(name = "Рецепты", description = "Эндпойнты для работы с рецептами")
 
 public class RecipeController {
-    private RecipeService recipeService;
+    private final RecipeService recipeService;
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }

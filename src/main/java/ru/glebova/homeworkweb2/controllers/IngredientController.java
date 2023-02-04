@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.glebova.homeworkweb2.model.Ingredient;
-import ru.glebova.homeworkweb2.model.Recipe;
 import ru.glebova.homeworkweb2.services.IngredientService;
 import java.util.Map;
 
@@ -19,9 +18,9 @@ import java.util.Map;
 @Tag(name = "Ингредиенты", description = "Эндпойнты для работы с ингредиентами")
 
 public class IngredientController {
-    private IngredientService ingredientService;
-    public IngredientController(IngredientService recipeService) {
-        this.ingredientService = recipeService;
+    private final IngredientService ingredientService;
+    public IngredientController(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
     }
 
     @GetMapping("/{id}")

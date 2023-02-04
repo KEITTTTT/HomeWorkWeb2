@@ -15,10 +15,10 @@ import java.util.Map;
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
-    private static final Map<Integer, Recipe> recipeMap = new HashMap<>();
+    private static Map<Integer, Recipe> recipeMap = new HashMap<>();
     private static int count = 0;
     private final RecipeFilesService recipeFilesService;
-    private Map<Integer, Recipe> recipes = new HashMap<>();
+
 
     public RecipeServiceImpl(RecipeFilesService recipeFilesService) {
         this.recipeFilesService = recipeFilesService;
@@ -26,7 +26,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @PostConstruct
     private void init() {
-        readRecipeFromFile();
+        try {
+            readRecipeFromFile();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,7 +67,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     private void saveRecipeToFile() {
         try {
-            String json = new ObjectMapper().writeValueAsString(recipes);
+            String json = new ObjectMapper().writeValueAsString(recipeMap);
             recipeFilesService.saveRecipeToFile(json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -73,7 +77,7 @@ public class RecipeServiceImpl implements RecipeService {
     private void readRecipeFromFile() {
         String json = recipeFilesService.readRecipeFromFile();
         try {
-            recipes = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipe>>() {
+            recipeMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipe>>() {
             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

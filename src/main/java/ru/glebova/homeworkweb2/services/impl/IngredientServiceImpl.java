@@ -14,9 +14,9 @@ import java.util.Map;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
-    private static final Map<Integer, Ingredient> ingredientMap = new HashMap<>();
+    private static Map<Integer, Ingredient> ingredientMap = new HashMap<>();
     private static int count = 0;
-    private Map<Integer, Ingredient> ingredients = new HashMap<>();
+
     private final IngredientFilesService ingredientFilesService;
 
     public IngredientServiceImpl(IngredientFilesService ingredientFilesService) {
@@ -25,12 +25,17 @@ public class IngredientServiceImpl implements IngredientService {
 
     @PostConstruct
     private void init() {
-        readIngredientFromFile();
+        try {
+            readIngredientFromFile();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Ingredient add(Ingredient ingredient) {
         ingredientMap.put(count++, ingredient);
+        saveIngredientToFile();
         return ingredient;
     }
 
@@ -43,6 +48,7 @@ public class IngredientServiceImpl implements IngredientService {
     public Ingredient update(int id, Ingredient ingredient) {
         if (ingredientMap.containsKey(id)) {
             ingredientMap.put(id, ingredient);
+            saveIngredientToFile();
             return ingredient;
         }
         return null;
@@ -63,17 +69,17 @@ public class IngredientServiceImpl implements IngredientService {
 
     private void saveIngredientToFile() {
         try {
-            String json = new ObjectMapper().writeValueAsString(ingredients);
+            String json = new ObjectMapper().writeValueAsString(ingredientMap);
             ingredientFilesService.saveIngredientToFile(json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void readIngredientFromFile() {
+    private void readIngredientFromFile(){
         String json = ingredientFilesService.readIngredientFromFile();
         try {
-            ingredients = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredient>>() {
+            ingredientMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredient>>() {
             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

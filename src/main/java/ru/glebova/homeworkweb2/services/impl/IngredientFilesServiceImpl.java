@@ -4,15 +4,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.glebova.homeworkweb2.services.IngredientFilesService;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
 public class IngredientFilesServiceImpl implements IngredientFilesService {
-    @Value("${path.to.recipe.data.file}")
+    @Value("${path.to.ingredient.data.file}")
     private String dataFilePath;
-    @Value("${name.of.recipe.data.file}")
+    @Value("${name.of.ingredient.data.file}")
     private String dataFileName;
 
     @Override
@@ -46,6 +47,9 @@ public class IngredientFilesServiceImpl implements IngredientFilesService {
             e.printStackTrace();
             return false;
         }
-
+    }
+    @Override
+    public File getDataFile() {
+        return new File(dataFilePath + "/" + dataFileName);
     }
 }
