@@ -2,6 +2,7 @@ package ru.glebova.homeworkweb2.services.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.glebova.homeworkweb2.exception.ReadIngredientFromFileException;
 import ru.glebova.homeworkweb2.services.IngredientFilesService;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class IngredientFilesServiceImpl implements IngredientFilesService {
         try {
             return Files.readString(Path.of(dataFilePath, dataFileName));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ReadIngredientFromFileException();
         }
     }
 

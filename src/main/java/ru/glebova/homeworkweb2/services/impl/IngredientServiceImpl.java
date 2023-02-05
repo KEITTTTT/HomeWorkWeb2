@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import ru.glebova.homeworkweb2.exception.IngredientReadToFileException;
+import ru.glebova.homeworkweb2.exception.IngredientSaveToFileException;
 import ru.glebova.homeworkweb2.model.Ingredient;
 import ru.glebova.homeworkweb2.services.IngredientFilesService;
 import ru.glebova.homeworkweb2.services.IngredientService;
@@ -72,7 +74,7 @@ public class IngredientServiceImpl implements IngredientService {
             String json = new ObjectMapper().writeValueAsString(ingredientMap);
             ingredientFilesService.saveIngredientToFile(json);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new IngredientSaveToFileException();
         }
     }
 
@@ -82,7 +84,7 @@ public class IngredientServiceImpl implements IngredientService {
             ingredientMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredient>>() {
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new IngredientReadToFileException();
         }
     }
 }

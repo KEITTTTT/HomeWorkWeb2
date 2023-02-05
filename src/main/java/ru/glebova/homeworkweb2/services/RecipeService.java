@@ -2,6 +2,8 @@ package ru.glebova.homeworkweb2.services;
 
 import ru.glebova.homeworkweb2.model.Recipe;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Map;
 
 public interface RecipeService {
@@ -14,4 +16,6 @@ public interface RecipeService {
     Recipe remove(int id);
 
     Map<Integer, Recipe> getAll();
+
+    Path getAllAsText() throws IOException;
 }

@@ -11,4 +11,3 @@ public class Ingredient {
     private int quantity;
     private String unit;
 }
-

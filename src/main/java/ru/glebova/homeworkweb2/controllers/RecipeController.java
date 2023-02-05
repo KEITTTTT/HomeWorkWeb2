@@ -7,10 +7,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.glebova.homeworkweb2.model.Recipe;
 import ru.glebova.homeworkweb2.services.RecipeService;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Map;
 
 @RestController
@@ -71,6 +79,26 @@ public class RecipeController {
     )
     public Map<Integer, Recipe> getAllRecipes() {
         return recipeService.getAll();
+    }
+    @GetMapping("/all")
+    @Operation(description = "Получение всех рецептов в текстовом файле")
+    public ResponseEntity<?> getAllAsText() {
+        try {
+            File file = recipeService.getAllAsText().toFile();
+            if (!file.exists() || Files.size(file.toPath()) == 0) {
+                return ResponseEntity.noContent().build();
+            }
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = \"Recipes.txt\"")
+                    .body(resource);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(e.toString());
+        }
     }
 
     @PostMapping
